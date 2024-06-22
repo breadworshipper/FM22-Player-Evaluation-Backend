@@ -16,7 +16,21 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
+from rest_framework_simplejwt.views import (
+    TokenObtainPairView,
+    TokenRefreshView,
+)
+from django.urls import include
+
+
+# Define your API v1 patterns here
+patterns = [
+    path('token/', TokenObtainPairView.as_view(), name='token_obtain_pair'),
+    path('token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
+    path('', include('authentication.urls')),  # Note the change here
+]
 
 urlpatterns = [
-    # path("admin/", admin.site.urls),
+    # path("admin/", admin.site.urls),  # Uncomment if you want to enable the admin site
+    path('api/v1/', include(patterns)),  # Include your API v1 patterns under the 'api/v1/' prefix
 ]
